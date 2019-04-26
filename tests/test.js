@@ -230,7 +230,7 @@ describe("channel_messages", () => {
   });
 });
 
-describe("user_messages", () => {
+describe.only("user_messages", () => {
   let fromId;
   let toId;
   let otherToId;
@@ -296,6 +296,7 @@ describe("user_messages", () => {
 
     it("lists the right messages", () =>
       db.userMessages.list({ fromId, toId }).then((messages) => {
+        console.log(messages);
         expect(messages[0]).to.include({ fromUser: "rp-3", message });
         expect(messages[0].id).to.be.a("number");
         expect(messages[1]).to.include({

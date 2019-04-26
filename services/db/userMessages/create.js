@@ -1,26 +1,23 @@
 module.exports = (knex, UserMessage) => {
   return (params) => {
-    const { fromId, toId, message } = params;
     console.log(params, "lkhflsdkhlsdkfnsdlknsldknvlkkdkkkkk");
     return knex
       .insert({
         from_id: params.fromId,
-        channel_id: params.channelId,
+        to_id: params.toId,
         message: params.message,
       })
       .into("user_messages")
       .then(() => {
         return knex
           .select(
-            "channel_messages.id",
-            "channel_messages.sent_at as sentAt",
-            "channels.name as toChannel",
-            "channel_messages.message",
+            "user_messages.id",
+            "user_messages.sent_at as sentAt",
+            "user_messages.message",
             "users.username as fromUser"
           )
-          .from("channel_messages")
-          .join("channels", "channel_messages.channel_id", "channels.id")
-          .join("users", "channel_messages.from_id", "=", "users.id");
+          .from("user_messages")
+          .join("users", "user_messages.from_id", "=", "users.id");
       })
       .then((messages) => messages)
       .catch((err) => {
