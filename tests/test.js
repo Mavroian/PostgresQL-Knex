@@ -177,7 +177,6 @@ describe("channel_messages", () => {
       db.channelMessages
         .create({ fromId, channelId, message })
         .then((messages) => {
-          console.log(messages[0]);
           expect(messages[0]).to.include({
             fromUser: "rp-3",
             toChannel: "general",
@@ -264,6 +263,7 @@ describe.only("user_messages", () => {
 
     it("creates a message", () =>
       db.userMessages.create({ fromId, toId, message }).then((messages) => {
+        console.log(messages);
         expect(messages[0]).to.include({ fromUser: "rp-3", message });
         expect(messages[0].id).to.be.a("number");
         expect(messages[0].sentAt).to.be.a("Date");
