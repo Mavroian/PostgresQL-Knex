@@ -20,6 +20,7 @@ module.exports = (knex, User) => {
       })
       .then((users) => new User(users.pop())) // create a user model out of the plain database response
       .catch((err) => {
+        console.log(err);
         // sanitize known errors
         if (err.message.match("duplicate key value"))
           throw new Error("That username already exists");
