@@ -1,30 +1,27 @@
 module.exports = (knex, channelMessage) => (params) => {
   return knex
-    .insert(
-      {
-        message: params.message,
-      },
-      { channel_id: params.channelId },
-      { fromUser: params.fromId }
-    )
+    .insert({
+      from_id: params.fromId,
+      channel_id: params.channelId,
+      message: params.message,
+    })
     .into("channel_messages")
     .then(() => {
-      knex
-        .select("name")
-        .from("users")
-        .where({ id: params.fromId });
+      // return knex.select().from("channel_messages");
+      return knex
+        .select(
+          "channel_messages.id",
+          "channel_messages.sent_at as sentAt",
+          "channels.name as toChannel",
+          "channel_messages.message",
+          "users.username as fromUser"
+        )
+        .from("channel_messages")
+        .join("channels", "channel_messages.channel_id", "channels.id")
+        .join("users", "channel_messages.from_id", "=", "users.id");
     })
-    .then((user_name) => {
-      knex
-        .select("name")
-        .from("channels")
-        .where({ id: params.channelId });
-    })
-    .then((channel_name) => {
-      return {
-        fromUser: "rp-3",
-        toChannel: channel_name,
-        message: params.message,
-      };
+    .then((messages) => messages)
+    .catch((err) => {
+      throw err;
     });
 };
