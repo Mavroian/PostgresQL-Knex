@@ -6,8 +6,8 @@ module.exports = (knex, User) => {
     const username = params.username;
 
     if (!validateUsername(username)) {
-      throw new Error(
-        "Username must be provided, and be at least two characters"
+      return Promise.reject(
+        new Error("Username must be provided, and be at least two characters")
       );
     }
 
@@ -25,7 +25,8 @@ module.exports = (knex, User) => {
           throw new Error("That username already exists");
 
         // throw unknown errors
-        throw err;
+
+        //   throw err;
       });
   };
 };

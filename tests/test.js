@@ -28,11 +28,11 @@ describe("users", () => {
         db.users
           .create(params)
           .then(forcePromiseReject)
-          .catch((err) =>
+          .catch((err) => {
             expect(err.message).to.equal(
               "Username must be provided, and be at least two characters"
-            )
-          ));
+            );
+          }));
     });
 
     context("when good params are given", () => {
@@ -140,7 +140,7 @@ describe("channels", () => {
   });
 });
 
-describe("channel_messages", () => {
+describe.only("channel_messages", () => {
   let fromId;
   let channelId;
   let otherChannelId;

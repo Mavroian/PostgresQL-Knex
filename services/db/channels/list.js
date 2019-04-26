@@ -1,5 +1,12 @@
 module.exports = (knex, Channel) => {
   return () => {
-    return Promise.resolve([]); // fix me!
+    return knex
+      .select()
+      .from("channels")
+      .then((channels) =>
+        channels.map((channel) => {
+          return new Channel(channel);
+        })
+      );
   };
 };
